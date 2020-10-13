@@ -113,6 +113,7 @@ public abstract class AbstractFinishHierarchyHandler<T> implements FinishHierarc
 					if (!SUITE.sameLevel(testItem.getType()) && testItem.isHasStats()) {
 						IssueEntity issueEntity = new IssueEntity();
 						issueEntity.setIssueType(it);
+						issueEntity.setIgnoreAnalyzer(true);
 						issueEntity.setTestItemResults(testItem.getItemResults());
 						issueEntityRepository.save(issueEntity);
 						testItem.getItemResults().setIssue(issueEntity);

@@ -109,6 +109,7 @@ public abstract class AbstractStatusChangingStrategy implements StatusChangingSt
 		IssueEntity issueEntity = new IssueEntity();
 		IssueType toInvestigate = issueTypeHandler.defineIssueType(projectId, TO_INVESTIGATE.getLocator());
 		issueEntity.setIssueType(toInvestigate);
+		issueEntity.setIgnoreAnalyzer(true);
 		issueEntity.setTestItemResults(testItem.getItemResults());
 		issueEntityRepository.save(issueEntity);
 		testItem.getItemResults().setIssue(issueEntity);

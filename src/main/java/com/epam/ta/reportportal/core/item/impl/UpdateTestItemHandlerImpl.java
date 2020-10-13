@@ -136,9 +136,9 @@ public class UpdateTestItemHandlerImpl implements UpdateTestItemHandler {
 	@Override
 	public List<Issue> defineTestItemsIssues(ReportPortalUser.ProjectDetails projectDetails, DefineIssueRQ defineIssue,
 			ReportPortalUser user) {
-		Project project = projectRepository.findById(projectDetails.getProjectId())
-				.orElseThrow(() -> new ReportPortalException(PROJECT_NOT_FOUND, projectDetails.getProjectId()));
-		AnalyzerConfig analyzerConfig = AnalyzerUtils.getAnalyzerConfig(project);
+//		Project project = projectRepository.findById(projectDetails.getProjectId())
+//				.orElseThrow(() -> new ReportPortalException(PROJECT_NOT_FOUND, projectDetails.getProjectId()));
+//		AnalyzerConfig analyzerConfig = AnalyzerUtils.getAnalyzerConfig(project);
 
 		List<String> errors = new ArrayList<>();
 		List<IssueDefinition> definitions = defineIssue.getIssues();
@@ -147,8 +147,8 @@ public class UpdateTestItemHandlerImpl implements UpdateTestItemHandler {
 		List<ItemIssueTypeDefinedEvent> events = new ArrayList<>();
 
 		// key - launch id, value - list of item ids
-		Map<Long, List<Long>> logsToReindexMap = new HashMap<>();
-		List<Long> logIdsToCleanIndex = new ArrayList<>();
+//		Map<Long, List<Long>> logsToReindexMap = new HashMap<>();
+//		List<Long> logIdsToCleanIndex = new ArrayList<>();
 
 		definitions.forEach(issueDefinition -> {
 			try {
@@ -178,22 +178,22 @@ public class UpdateTestItemHandlerImpl implements UpdateTestItemHandler {
 
 				testItemRepository.save(testItem);
 
-				if (ITEM_CAN_BE_INDEXED.test(testItem)) {
-					Long launchId = testItem.getLaunchId();
-					Long itemId = testItem.getItemId();
-					if (logsToReindexMap.containsKey(launchId)) {
-						logsToReindexMap.get(launchId).add(itemId);
-					} else {
-						List<Long> itemIds = Lists.newArrayList();
-						itemIds.add(itemId);
-						logsToReindexMap.put(launchId, itemIds);
-					}
-				} else {
-					logIdsToCleanIndex.addAll(logRepository.findIdsUnderTestItemByLaunchIdAndTestItemIdsAndLogLevelGte(testItem.getLaunchId(),
-							Collections.singletonList(testItem.getItemId()),
-							LogLevel.ERROR.toInt()
-					));
-				}
+//				if (ITEM_CAN_BE_INDEXED.test(testItem)) {
+//					Long launchId = testItem.getLaunchId();
+//					Long itemId = testItem.getItemId();
+//					if (logsToReindexMap.containsKey(launchId)) {
+//						logsToReindexMap.get(launchId).add(itemId);
+//					} else {
+//						List<Long> itemIds = Lists.newArrayList();
+//						itemIds.add(itemId);
+//						logsToReindexMap.put(launchId, itemIds);
+//					}
+//				} else {
+//					logIdsToCleanIndex.addAll(logRepository.findIdsUnderTestItemByLaunchIdAndTestItemIdsAndLogLevelGte(testItem.getLaunchId(),
+//							Collections.singletonList(testItem.getItemId()),
+//							LogLevel.ERROR.toInt()
+//					));
+//				}
 
 				updated.add(IssueConverter.TO_MODEL.apply(issueEntity));
 
@@ -205,12 +205,12 @@ public class UpdateTestItemHandlerImpl implements UpdateTestItemHandler {
 			}
 		});
 		expect(errors.isEmpty(), equalTo(TRUE)).verify(FAILED_TEST_ITEM_ISSUE_TYPE_DEFINITION, errors.toString());
-		if (!logsToReindexMap.isEmpty()) {
-			logsToReindexMap.forEach((key, value) -> logIndexer.indexItemsLogs(project.getId(), key, value, analyzerConfig));
-		}
-		if (!logIdsToCleanIndex.isEmpty()) {
-			logIndexer.cleanIndex(project.getId(), logIdsToCleanIndex);
-		}
+//		if (!logsToReindexMap.isEmpty()) {
+//			logsToReindexMap.forEach((key, value) -> logIndexer.indexItemsLogs(project.getId(), key, value, analyzerConfig));
+//		}
+//		if (!logIdsToCleanIndex.isEmpty()) {
+//			logIndexer.cleanIndex(project.getId(), logIdsToCleanIndex);
+//		}
 		events.forEach(messageBus::publishActivity);
 		return updated;
 	}
