@@ -89,13 +89,13 @@ rp:
   amqp:
     addresses: amqp://${rp.amqp.user}:${rp.amqp.pass}@${rp.amqp.host}:${rp.amqp.port}
     api-address: http://${rp.amqp.apiuser}:${rp.amqp.apipass}@${rp.amqp.host}:${rp.amqp.apiport}/api
-    host: rabbitmq
-    port: 5672
-    user:
-    pass:
-    apiport: 15672
-    apiuser:
-    apipass:
+    host: 192.168.100.94
+    port: 31884
+    user: guest
+    pass: wosai1234
+    apiport: 31841
+    apiuser: guest
+    apipass: wosai1234
     queues: 10
     queuesPerPod: 10
     reply-timeout: 300000 #milliseconds
@@ -111,15 +111,15 @@ rp:
     jdbcUrl: ${rp.db.url}
     username: ${rp.db.user}
     password: ${rp.db.pass}
-    maximumPoolSize: 27
+    maximumPoolSize: 5
 
   db:
     url: jdbc:postgresql://${rp.db.host}:${rp.db.port}/${rp.db.name}
     name: reportportal
-    host: postgres
-    port: 5432
-    user:
-    pass:
+    host: 192.168.100.94
+    port: 31861
+    user: postgres
+    pass: postgres
 
   upload:
     maxUploadSize: 128MB
@@ -136,9 +136,9 @@ rp:
   binarystore:
     path: /data/storage
     minio:
-      endpoint: http://play.min.io
-      accessKey:
-      secretKey:
+      endpoint: http://192.168.100.94:32292
+      accessKey: minio
+      secretKey: minio123
       bucketPrefix: prj-
       defaultBucketName: rp-bucket
     # could be one of [seaweed, filesystem, minio]
