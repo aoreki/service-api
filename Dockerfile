@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM openjdk:11-jre
 LABEL version=5.3.1 description="EPAM Report portal. Main API Service" maintainer="Andrei Varabyeu <andrei_varabyeu@epam.com>"
 WORKDIR /
 ADD build/libs/service-api-5.4.0-SNAPSHOT-exec.jar /service-api-5.4.0-exec.jar
